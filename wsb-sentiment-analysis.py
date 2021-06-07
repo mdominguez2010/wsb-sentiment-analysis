@@ -47,7 +47,7 @@ ups = 20       # define # of upvotes, post is considered if upvotes exceed this 
 limit = 10      # define the limit, comments 'replace more' limit
 upvotes = 2     # define # of upvotes, comment is considered if upvotes exceed this #
 picks = 10     # define # of picks here, prints as "Top ## picks are:"
-picks_ayz = 5   # define # of picks for sentiment analysis
+picks_ayz = 10   # define # of picks for sentiment analysis
 
 posts, count, c_analyzed, tickers, titles, a_comments = 0, 0, 0, {}, [], {}
 cmt_auth = {}
