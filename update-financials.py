@@ -62,7 +62,7 @@ historic_sentiment_analysis = pd.read_csv('historic_sentiment_analysis.csv')
 
 # Update csv
 historic_sentiment_analysis = pd.concat([historic_sentiment_analysis, current], axis = 0, ignore_index=True)
-#historic_sentiment_analysis.to_csv('historic_sentiment_analysis.csv', index=False)
+historic_sentiment_analysis.to_csv('historic_sentiment_analysis.csv', index=False)
 
 
 ####################################################################################
