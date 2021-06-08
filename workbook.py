@@ -1,6 +1,5 @@
 # Scratch paper for playing with data
 
-from os import set_blocking
 import requests
 import pandas as pd
 import numpy as np
@@ -15,7 +14,7 @@ historic_sentiment_analysis['date'] = pd.to_datetime(historic_sentiment_analysis
 def plot_sentiment_trends(df = historic_sentiment_analysis):
     '''
     Input: dataframe
-    Output: 3 trend graphs (Bullish, Bearish, Neutral)
+    Output: 4 trend graphs (Bullish, Bearish, Neutral, Total_Compound)
     '''
     sentiment_list = ['Bullish', 'Bearish', 'Neutral', 'Total_Compound']
 

@@ -14,6 +14,7 @@ stocks_list = list(df['stock'])
 
 # The Quotes api call retrieves ticker information (price, etc.)
 # The Fundamentals api call retrieves company information (market cap, p/e ratio, etc.)
+
 # parameters
 parameters_quotes = {
     'apikey': client_id,
