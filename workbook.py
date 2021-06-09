@@ -1,14 +1,14 @@
 # Scratch paper for playing with data
 
-import requests
 import pandas as pd
 import numpy as np
-from datetime import date
+from datetime import date, datetime
 import plotly.graph_objects as go
 
 # Import data and convert date column to datetime datatype
 historic_sentiment_analysis = pd.read_csv('historic_sentiment_analysis.csv')
 historic_sentiment_analysis['date'] = pd.to_datetime(historic_sentiment_analysis['date'])
+
 # historic_sentiment_analysis.head()
 
 def plot_sentiment_trends(df = historic_sentiment_analysis):
