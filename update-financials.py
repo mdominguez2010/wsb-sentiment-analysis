@@ -1,4 +1,4 @@
-from os import set_blocking
+import shutil
 import requests
 import pandas as pd
 import numpy as np
@@ -48,11 +48,13 @@ df_f = pd.DataFrame(columns = fund_cols)
 for stock in stocks_list:
     df_f = df_f.append(pd.Series(data_fundamental[stock]['fundamental'], index=fund_cols), ignore_index=True)
 
-
 # Combine both dataframes
 # Remove duplicates
 current = pd.concat([df, df_q, df_f], axis=1)
 current = current.loc[:, ~current.columns.duplicated()]
+
+# Before writing our new data to the file, let's make a copy of the file in case something goes wrong
+shutil.copyfile('historic_sentiment_analysis.csv', 'historic_sentiment_analysis-copy.csv')
 
 # Read csv
 historic_sentiment_analysis = pd.read_csv('historic_sentiment_analysis.csv')
