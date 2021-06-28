@@ -1,8 +1,6 @@
 # Scratch paper for playing with data
 
 import pandas as pd
-import numpy as np
-from datetime import date, datetime
 import plotly.graph_objects as go
 
 # Import data and convert date column to datetime datatype

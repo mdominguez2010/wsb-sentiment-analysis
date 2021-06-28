@@ -57,8 +57,14 @@ for sub in subs:
     hot_python = subreddit.hot() # sorting posts by hot
     # Extracting comments, symbols from subreddit
     for submission in hot_python:
+        # print(submission)
         flair = submission.link_flair_text
-        author = submission.author.name
+        # print(flair)
+        try:
+            author = submission.author.name
+        except AttributeError:
+            pass
+        #print(author)
 
         # Checking: post upvote ratio # of upvotes, post flair, and author
         if submission.upvote_ratio >= upvoteRatio and submission.ups > ups and (flair in post_flairs or flair is None) and author not in ignoreAuthP:
