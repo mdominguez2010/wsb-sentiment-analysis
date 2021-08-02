@@ -17,6 +17,7 @@ Author: github:asad70
 
 #  Import Libraries
 import pandas as pd
+from pandas.core.frame import DataFrame
 import praw
 from data import *
 from credentials import user_agent, client_id, client_secret
@@ -26,44 +27,13 @@ import squarify
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from datetime import date
 
-############# Proper program in progress #############
-# print("\nRunning sentiment analysis, this may take a few minutes...\n")
-
-# Instantiate praw object
-start_time = time.time()
-reddit = praw.Reddit(
-    user_agent = user_agent,
-    client_id = client_id,
-    client_secret = client_secret
-)
-
-# Set program parameters
-subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket']     # sub-reddit to search
-post_flairs = {'Daily Discussion', 'Weekend Discussion', 'Discussion'}    # posts flairs to search || None flair is automatically considered
-goodAuth = {'AutoModerator'}   # authors whom comments are allowed more than once
-uniqueCmt = True                # allow one comment per author per symbol
-ignoreAuthP = {'example'}       # authors to ignore for posts 
-ignoreAuthC = {'example'}       # authors to ignore for comment 
-upvoteRatio = 0.70         # upvote ratio for post to be considered, 0.70 = 70%
-ups = 20       # define # of upvotes, post is considered if upvotes exceed this #
-limit = 10      # define the limit, comments 'replace more' limit
-upvotes = 2     # define # of upvotes, comment is considered if upvotes exceed this #
-posts = 0
-c_analyzed = 0
-
-picks = 10     # define # of picks here, prints as "Top ## picks are:"
-
-picks_ayz = 10   # define # of picks for sentiment analysis
-
-count, tickers, titles, a_comments = 0, {}, [], {}
-cmt_auth = {}
-
 class crawlSubreddit:
 
     def extract_tickers(
         self, subs=subs, post_flairs=post_flairs, goodAuth=goodAuth, uniqueCmt=uniqueCmt,
         ignoreAuthP=ignoreAuthP, ignoreAuthC=ignoreAuthC, upvoteRatio=upvoteRatio,
-        ups=ups, limit=limit, upvotes=upvotes, posts=posts, c_analyzed=c_analyzed):
+        ups=ups, limit=limit, upvotes=upvotes, posts=posts, c_analyzed=c_analyzed,
+        count=count, tickers=tickers, titles=titles, a_comments=a_comments, cmt_auth=cmt_auth):
         """
         Crawls the subreddits and performs analysis
         """
@@ -162,6 +132,8 @@ class userFeedback:
             times.append(symbols[i])
             top.append(f"{i}: {symbols[i]}")
 
+        return times, top
+
 class sentimentAnalysis:
     
     def vaderSentiment(self, vader):
@@ -191,41 +163,49 @@ class sentimentAnalysis:
 
         return scores, s
 
-############# Proper program in progress #############
+    def print_details(self, scores):
+        '''
+        Printing sentiment analysis
+        '''
+        print(f"\nSentiment analysis of top {picks_ayz} picks:")
+        df = pd.DataFrame(scores)
+        df.index = ['Bearish', 'Neutral', 'Bullish', 'Total_Compound']
+        df = df.T
+        print(df)
 
+        return df
 
+    def plot_details(self, times, top, df):
+        """
+        Data visualization. Most mentioned picks and sentiment analysis
+        """
+        squarify.plot(sizes=times, label=top, alpha=0.7)
+        plt.axis('off')
+        plt.title(f"{picks} most mentioned picks")
+        plt.show()
 
-############ LEFT OFF HERE
+        # Sentiment analysis
+        df = df.astype(float)
+        colors = ['red', 'springgreen', 'forestgreen', 'coral']
+        df.plot(kind='bar', color=colors, title=f"Sentiment analysis of top {picks_ayz} picks:")
+        plt.show()
 
-# Printing sentiment analysis
-print(f"\nSentiment analysis of top {picks_ayz} picks:")
-df = pd.DataFrame(scores)
-df.index = ['Bearish', 'Neutral', 'Bullish', 'Total_Compound']
-df = df.T
-print(df)
+class Saving:
 
-# Data Visualization
-# Most mentioned picks
-squarify.plot(sizes=times, label=top, alpha=0.7)
-plt.axis('off')
-plt.title(f"{picks} most mentioned picks")
-plt.show()
+    def __init__(self, df):
+        self.df = df
+    
+    def save_csv(self, df):
+        """
+        Preps dataframe then saves as csv in current directory
+        """
+        # append date column to dataframe for storing in database
+        df['date'] = [date.today() for x in range(df.shape[0])]
+        df.reset_index(inplace=True)
+        df.rename(columns={'index': 'stock'}, inplace=True)
 
-# Sentiment analysis
-df = df.astype(float)
-colors = ['red', 'springgreen', 'forestgreen', 'coral']
-df.plot(kind='bar', color=colors, title=f"Sentiment analysis of top {picks_ayz} picks:")
-plt.show()
-
-# append date column to dataframe for storing in database
-df['date'] = [date.today() for x in range(df.shape[0])]
-df.reset_index(inplace=True)
-df.rename(columns={'index': 'stock'}, inplace=True)
-
-# Save current top wsb stocks to csv file
-df.to_csv('df.csv')
-
-############# Proper program in progress #############
+        # Save current top wsb stocks to csv file
+        df.to_csv('df.csv')
 
 if __name__ == "__main__":
 
@@ -254,6 +234,8 @@ if __name__ == "__main__":
     posts = 0
     c_analyzed = 0
     picks = 10     # define # of picks here, prints as "Top ## picks are:"
+    count, tickers, titles, a_comments = 0, {}, [], {}
+    cmt_auth = {}
     
 
     crawlSubreddit = crawlSubreddit()
@@ -261,7 +243,8 @@ if __name__ == "__main__":
     tickers, posts = crawlSubreddit.extract_tickers(
         subs=subs, post_flairs=post_flairs, goodAuth=goodAuth, uniqueCmt=uniqueCmt,
         ignoreAuthP=ignoreAuthP, ignoreAuthC=ignoreAuthC, upvoteRatio=upvoteRatio,
-        ups=ups, limit=limit, upvotes=upvotes, posts=posts, c_analyzed=c_analyzed
+        ups=ups, limit=limit, upvotes=upvotes, posts=posts, c_analyzed=c_analyzed,
+        count=count, tickers=tickers, titles=titles, a_comments=a_comments, cmt_auth=cmt_auth
     )
 
     cleanData = cleanData(tickers=tickers, picks=picks)
@@ -272,8 +255,7 @@ if __name__ == "__main__":
     run_time = end_time - start_time
 
     userFeedback.print_top_picks(run_time, c_analyzed, posts, subs)
-    userFeedback.print_most_mentioned(picks)
-
+    times, top = userFeedback.print_most_mentioned(picks)
 
     ### Sentiment Analysis ###
     picks_ayz = 10   # define # of picks for sentiment analysis
@@ -283,6 +265,12 @@ if __name__ == "__main__":
     vader.lexicon.update(new_words)
 
     scores, s = sentimentAnalysis.vaderSentiment(vader)
+
+    df = sentimentAnalysis.print_details(scores=scores)
+
+    sentimentAnalysis.plot_details(times, top, df)
+
+    Saving.save_csv(df)
 
 
 
