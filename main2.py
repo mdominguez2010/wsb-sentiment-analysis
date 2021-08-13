@@ -17,7 +17,6 @@ Author: github:asad70
 
 #  Import Libraries
 import pandas as pd
-from pandas.core.frame import DataFrame
 import praw
 from data import *
 from credentials import user_agent, client_id, client_secret
@@ -29,15 +28,30 @@ from datetime import date
 
 class crawlSubreddit:
 
-    def extract_tickers(
-        self, subs=subs, post_flairs=post_flairs, goodAuth=goodAuth, uniqueCmt=uniqueCmt,
-        ignoreAuthP=ignoreAuthP, ignoreAuthC=ignoreAuthC, upvoteRatio=upvoteRatio,
-        ups=ups, limit=limit, upvotes=upvotes, posts=posts, c_analyzed=c_analyzed,
-        count=count, tickers=tickers, titles=titles, a_comments=a_comments, cmt_auth=cmt_auth):
+    def __init__(self, subs):
+        self.subs = subs
+        self.post_flairs = post_flairs
+        self.goodAuth = goodAuth
+        self.uniqueCmt = uniqueCmt
+        self.ignoreAuthP = ignoreAuthP
+        self.ignorAuthC = ignoreAuthC
+        self.upvoteRatio = upvoteRatio
+        self.ups = ups
+        self.limit = limit
+        self.upvotes = upvotes
+        self.posts = posts
+        self.c_analyzed = c_analyzed
+        self.count = count
+        self.tickers = tickers
+        self.titles = titles
+        self.a_comments = a_comments
+        self.cmt_auth = cmt_auth
+
+    def extract_tickers(self):
         """
         Crawls the subreddits and performs analysis
         """
-        for sub in subs:
+        for sub in self.subs:
             subreddit = reddit.subreddit(sub)
             hot_python = subreddit.hot() # sorting posts by hot
             # Extracting comments, symbols from subreddit
@@ -52,7 +66,7 @@ class crawlSubreddit:
                 #print(author)
 
                 # Checking: post upvote ratio # of upvotes, post flair, and author
-                if submission.upvote_ratio >= upvoteRatio and submission.ups > ups and (flair in post_flairs or flair is None) and author not in ignoreAuthP:
+                if submission.upvote_ratio >= upvoteRatio and submission.ups > ups and (flair in self.post_flairs or flair is None) and author not in ignoreAuthP:
                     submission.comment_sort = 'new'
                     comments = submission.comments
                     titles.append(submission.title)
@@ -209,7 +223,6 @@ class Saving:
 
 if __name__ == "__main__":
 
-    ### Extract subreddit text data ###
     start_time = userFeedback.time_it()
 
     print("\nRunning sentiment analysis, this may take a few minutes...\n")
@@ -237,15 +250,14 @@ if __name__ == "__main__":
     count, tickers, titles, a_comments = 0, {}, [], {}
     cmt_auth = {}
     
-
-    crawlSubreddit = crawlSubreddit()
-
-    tickers, posts = crawlSubreddit.extract_tickers(
+    crawlSubreddit = crawlSubreddit(
         subs=subs, post_flairs=post_flairs, goodAuth=goodAuth, uniqueCmt=uniqueCmt,
         ignoreAuthP=ignoreAuthP, ignoreAuthC=ignoreAuthC, upvoteRatio=upvoteRatio,
         ups=ups, limit=limit, upvotes=upvotes, posts=posts, c_analyzed=c_analyzed,
         count=count, tickers=tickers, titles=titles, a_comments=a_comments, cmt_auth=cmt_auth
     )
+
+    tickers, posts = crawlSubreddit.extract_tickers()
 
     cleanData = cleanData(tickers=tickers, picks=picks)
     symbols, top_picks = cleanData.sort_dictionary(tickers=tickers, picks=picks)
