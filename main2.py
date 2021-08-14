@@ -215,20 +215,21 @@ class sentimentAnalysis:
 
 class Saving:
 
-    def __init__(self, df):
+    def __init__(self, df, date):
         self.df = df
+        self.date = date
     
-    def save_csv(self, df):
+    def save_csv(self):
         ***REMOVED***
         Preps dataframe then saves as csv in current directory
         ***REMOVED***
         # append date column to dataframe for storing in database
-        df['date'] = [date.today() for x in range(df.shape[0])]
-        df.reset_index(inplace=True)
-        df.rename(columns={'index': 'stock'}, inplace=True)
+        self.df['date'] = [self.date.today() for x in range(self.df.shape[0])]
+        self.df.reset_index(inplace=True)
+        self.df.rename(columns={'index': 'stock'}, inplace=True)
 
         # Save current top wsb stocks to csv file
-        df.to_csv('df.csv')
+        self.df.to_csv('df.csv')
 
 if __name__ == "__main__":
 
