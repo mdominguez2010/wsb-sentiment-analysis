@@ -126,18 +126,14 @@ class cleanData:
         return symbols, top_picks
 
 class userFeedback:
-    def __init__(self, time, run_time, c_analyzed, posts, subs, picks, top_picks, symbols):
-        self.time = time
-        self.run_time = run_time
+
+    def __init__(self, c_analyzed, posts, subs, picks, top_picks, symbols):
         self.c_analyzed = c_analyzed
         self.posts = posts
         self.subs = subs
         self.picks = picks
         self.top_picks = top_picks
         self.symbols = symbols
-
-    def time_it(self):
-        return self.time.time()
 
     def print_top_picks(self):
         # print top picks
@@ -233,17 +229,7 @@ class Saving:
 
 if __name__ == "__main__":
 
-    start_time = userFeedback.time_it()
-
-    print("\nRunning sentiment analysis, this may take a few minutes...\n")
-    
-    reddit = praw.Reddit(
-        user_agent = user_agent,
-        client_id = client_id,
-        client_secret = client_secret
-    )
-
-    # Set program parameters
+        # Set program parameters
     subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket']     # sub-reddit to search
     post_flairs = {'Daily Discussion', 'Weekend Discussion', 'Discussion'}    # posts flairs to search || None flair is automatically considered
     goodAuth = {'AutoModerator'}   # authors whom comments are allowed more than once
@@ -259,7 +245,17 @@ if __name__ == "__main__":
     picks = 10     # define # of picks here, prints as "Top ## picks are:"
     count, tickers, titles, a_comments = 0, {}, [], {}
     cmt_auth = {}
+
+    start_time = time.time()
+
+    print("\nRunning sentiment analysis, this may take a few minutes...\n")
     
+    reddit = praw.Reddit(
+        user_agent = user_agent,
+        client_id = client_id,
+        client_secret = client_secret
+    )
+
     crawlSubreddit = crawlSubreddit(
         subs=subs, post_flairs=post_flairs, goodAuth=goodAuth, uniqueCmt=uniqueCmt,
         ignoreAuthP=ignoreAuthP, ignoreAuthC=ignoreAuthC, upvoteRatio=upvoteRatio,
@@ -272,12 +268,15 @@ if __name__ == "__main__":
     cleanData = cleanData(tickers=tickers, picks=picks)
     symbols, top_picks = cleanData.sort_dictionary(tickers=tickers, picks=picks)
 
+    # userFeedback.print_top_picks(run_time, c_analyzed, posts, subs)
+    # times, top = userFeedback.print_most_mentioned(picks)
 
-    end_time = userFeedback.time_it()
-    run_time = end_time - start_time
-
-    userFeedback.print_top_picks(run_time, c_analyzed, posts, subs)
-    times, top = userFeedback.print_most_mentioned(picks)
+    feedback = userFeedback(c_analyzed=c_analyzed, posts=posts,
+                            subs=subs, picks=picks, top_picks=top_picks,
+                            symbols=symbols)
+    
+    feedback.print_top_picks
+    times, top = feedback.print_most_mentioned(picks)
 
     ### Sentiment Analysis ###
     picks_ayz = 10   # define # of picks for sentiment analysis
@@ -293,6 +292,9 @@ if __name__ == "__main__":
     sentimentAnalysis.plot_details(times, top, df)
 
     Saving.save_csv(df)
+
+    end_time = userFeedback.time_it()
+    run_time = end_time - start_time
 
 
 
