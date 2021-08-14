@@ -126,25 +126,34 @@ class cleanData:
         return symbols, top_picks
 
 class userFeedback:
+    def __init__(self, time, run_time, c_analyzed, posts, subs, picks, top_picks, symbols):
+        self.time = time
+        self.run_time = run_time
+        self.c_analyzed = c_analyzed
+        self.posts = posts
+        self.subs = subs
+        self.picks = picks
+        self.top_picks = top_picks
+        self.symbols = symbols
 
     def time_it(self):
-        return time.time()
+        return self.time.time()
 
-    def print_top_picks(self, run_time, c_analyzed, posts, subs):
+    def print_top_picks(self):
         # print top picks
-        print("It took {t:.2f} seconds to analyze {c} comments in {p} posts in {s} subreddits.\n".format(t=run_time,
-                                                                                                        c=c_analyzed,
-                                                                                                        p=posts,
-                                                                                                        s=len(subs)))
+        print("It took {t:.2f} seconds to analyze {c} comments in {p} posts in {s} subreddits.\n".format(t=self.run_time,
+                                                                                                        c=self.c_analyzed,
+                                                                                                        p=self.posts,
+                                                                                                        s=len(self.subs)))
 
-    def print_most_mentioned(self, picks):
-        print(f"\n{picks} most mentioned picks: ")
+    def print_most_mentioned(self):
+        print(f"\n{self.picks} most mentioned picks: ")
         times = []
         top = []
-        for i in top_picks:
-            print(f"{i}: {symbols[i]}")
-            times.append(symbols[i])
-            top.append(f"{i}: {symbols[i]}")
+        for i in self.top_picks:
+            print(f"{i}: {self.symbols[i]}")
+            times.append(self.symbols[i])
+            top.append(f"{i}: {self.symbols[i]}")
 
         return times, top
 
