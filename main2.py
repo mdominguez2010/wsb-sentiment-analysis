@@ -70,7 +70,7 @@ class crawlSubreddit:
                     submission.comment_sort = 'new'
                     comments = submission.comments
                     titles.append(submission.title)
-                    posts += 1
+                    self.posts += 1
                     submission.comments.replace_more(limit = limit)
                     for comment in comments:
                         # try except for deleted account?
@@ -78,10 +78,10 @@ class crawlSubreddit:
                             auth = comment.author.name
                         except:
                             pass
-                        c_analyzed += 1
+                        self.c_analyzed += 1
 
                         # checking: comment upvotes and author
-                        if comment.score > upvotes and auth not in ignoreAuthC:
+                        if comment.score > upvotes and auth not in self.ignoreAuthC:
                             split = comment.body.split(' ')
                             for word in split:
                                 word = word.replace("$", "")
@@ -89,9 +89,9 @@ class crawlSubreddit:
                                 if word.isupper() and len(word) <= 5 and word not in blacklist and word in stocks:
                                     
                                     # unique comments, try/except for key errors
-                                    if uniqueCmt and auth not in goodAuth:
+                                    if uniqueCmt and auth not in self.goodAuth:
                                         try:
-                                            if auth in cmt_auth[word]:
+                                            if auth in self.cmt_auth[word]:
                                                 break
                                         except:
                                             pass
