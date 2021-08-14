@@ -28,13 +28,17 @@ from datetime import date
 
 class crawlSubreddit:
 
-    def __init__(self, subs):
+    def __init__(self, subs, post_flairs, goodAuth, uniqueCmt,
+                 ignoreAuthP, ignoreAuthC, upvoteRatio, ups,
+                 limit, upvotes, posts, c_analyzed, count, tickers,
+                 titles, a_comments, cmt_auth
+                 ):
         self.subs = subs
         self.post_flairs = post_flairs
         self.goodAuth = goodAuth
         self.uniqueCmt = uniqueCmt
         self.ignoreAuthP = ignoreAuthP
-        self.ignorAuthC = ignoreAuthC
+        self.ignoreAuthC = ignoreAuthC
         self.upvoteRatio = upvoteRatio
         self.ups = ups
         self.limit = limit
@@ -66,7 +70,7 @@ class crawlSubreddit:
                 #print(author)
 
                 # Checking: post upvote ratio # of upvotes, post flair, and author
-                if submission.upvote_ratio >= upvoteRatio and submission.ups > ups and (flair in self.post_flairs or flair is None) and author not in ignoreAuthP:
+                if submission.upvote_ratio >= self.upvoteRatio and submission.ups > self.ups and (flair in self.post_flairs or flair is None) and author not in ignoreAuthP:
                     submission.comment_sort = 'new'
                     comments = submission.comments
                     titles.append(submission.title)
@@ -81,7 +85,7 @@ class crawlSubreddit:
                         self.c_analyzed += 1
 
                         # checking: comment upvotes and author
-                        if comment.score > upvotes and auth not in self.ignoreAuthC:
+                        if comment.score > self.upvotes and auth not in self.ignoreAuthC:
                             split = comment.body.split(' ')
                             for word in split:
                                 word = word.replace("$", "")
@@ -101,12 +105,12 @@ class crawlSubreddit:
                                         tickers[word] += 1
                                         a_comments[word].append(comment.body)
                                         cmt_auth[word].append(auth)
-                                        count += 1
+                                        self.count += 1
                                     else:
                                         tickers[word] = 1
                                         cmt_auth[word] = [auth]
                                         a_comments[word] = [comment.body]
-                                        count += 1
+                                        self.count += 1
 
         return tickers, posts
 
@@ -155,16 +159,25 @@ class userFeedback:
 
 class sentimentAnalysis:
     
-    def vaderSentiment(self, vader):
+    def __init__(self, vader, symbols, picks_ayz, a_comments, times, top, picks):
+        self.vader = vader
+        self.symbols = symbols
+        self.picks_ayz = picks_ayz
+        self.a_comments = a_comments
+        self.times = times
+        self.top = top
+        self.picks = picks
+
+    def vaderSentiment(self):
 
         # adding custom words from data.py
-        vader.lexicon.update(new_words)
+        self.vader.lexicon.update(new_words)
         scores, s = {}, {}
-        picks_sentiment = list(symbols.keys())[0: picks_ayz]
+        picks_sentiment = list(self.symbols.keys())[0: self.picks_ayz]
         for symbol in picks_sentiment:
-            stock_comments = a_comments[symbol]
+            stock_comments = self.a_comments[symbol]
             for cmnt in stock_comments:
-                score = vader.polarity_scores(cmnt)
+                score = self.vader.polarity_scores(cmnt)
                 if symbol in s:
                     s[symbol][cmnt] = score
                 else:
@@ -186,7 +199,7 @@ class sentimentAnalysis:
         '''
         Printing sentiment analysis
         '''
-        print(f"\nSentiment analysis of top {picks_ayz} picks:")
+        print(f"\nSentiment analysis of top {self.picks_ayz} picks:")
         df = pd.DataFrame(scores)
         df.index = ['Bearish', 'Neutral', 'Bullish', 'Total_Compound']
         df = df.T
@@ -194,13 +207,13 @@ class sentimentAnalysis:
 
         return df
 
-    def plot_details(self, times, top, df):
+    def plot_details(self, df):
         ***REMOVED***
         Data visualization. Most mentioned picks and sentiment analysis
         ***REMOVED***
-        squarify.plot(sizes=times, label=top, alpha=0.7)
+        squarify.plot(sizes=self.times, label=self.top, alpha=0.7)
         plt.axis('off')
-        plt.title(f"{picks} most mentioned picks")
+        plt.title(f"{self.picks} most mentioned picks")
         plt.show()
 
         # Sentiment analysis
@@ -243,6 +256,7 @@ if __name__ == "__main__":
     posts = 0
     c_analyzed = 0
     picks = 10     # define # of picks here, prints as "Top ## picks are:"
+    picks_ayz = 10   # define # of picks for sentiment analysis
     count, tickers, titles, a_comments = 0, {}, [], {}
     cmt_auth = {}
 
@@ -266,7 +280,7 @@ if __name__ == "__main__":
     tickers, posts = crawlSubreddit.extract_tickers()
 
     cleanData = cleanData(tickers=tickers, picks=picks)
-    symbols, top_picks = cleanData.sort_dictionary(tickers=tickers, picks=picks)
+    symbols, top_picks = cleanData.sort_dictionary()
 
     # userFeedback.print_top_picks(run_time, c_analyzed, posts, subs)
     # times, top = userFeedback.print_most_mentioned(picks)
@@ -276,20 +290,24 @@ if __name__ == "__main__":
                             symbols=symbols)
     
     feedback.print_top_picks
-    times, top = feedback.print_most_mentioned(picks)
+    times, top = feedback.print_most_mentioned()
 
     ### Sentiment Analysis ###
-    picks_ayz = 10   # define # of picks for sentiment analysis
+    
 
     vader = SentimentIntensityAnalyzer()
     # adding custom words from data.py
     vader.lexicon.update(new_words)
 
-    scores, s = sentimentAnalysis.vaderSentiment(vader)
+    sentiment_analysis = sentimentAnalysis(vader=vader, symbols=symbols,
+                                           picks_ayz=picks_ayz, a_comments=a_comments,
+                                           times=times, top=top, picks=picks)
 
-    df = sentimentAnalysis.print_details(scores=scores)
+    scores, s = sentiment_analysis.vaderSentiment()
 
-    sentimentAnalysis.plot_details(times, top, df)
+    df = sentiment_analysis.print_details(scores=scores)
+
+    sentiment_analysis.plot_details(df)
 
     Saving.save_csv(df)
 
