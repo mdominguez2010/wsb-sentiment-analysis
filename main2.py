@@ -240,6 +240,19 @@ class Saving:
         # Save current top wsb stocks to csv file
         self.df.to_csv('df.csv')
 
+def time_it(time):
+    '''
+    Records time
+    '''
+    return time.time()
+
+def print_run_time(start, end):
+    '''
+    Prints program run time
+    '''
+    run_time = end - start
+    print("Program run time: %.0f" % run_time, "seconds")
+
 if __name__ == "__main__":
 
         # Set program parameters
@@ -260,9 +273,9 @@ if __name__ == "__main__":
     count, tickers, titles, a_comments = 0, {}, [], {}
     cmt_auth = {}
 
-    start_time = time.time()
+    start_time = time_it(time)
 
-    print("\nRunning sentiment analysis, this may take a few minutes...\n")
+    print("\nRunning program, this may take a few minutes...\n")
     
     reddit = praw.Reddit(
         user_agent = user_agent,
@@ -309,10 +322,11 @@ if __name__ == "__main__":
 
     sentiment_analysis.plot_details(df)
 
-    Saving.save_csv(df)
+    saving = Saving(df, date)
+    saving.save_csv()
 
-    end_time = userFeedback.time_it()
-    run_time = end_time - start_time
+    end_time = time_it(time)
+    print_run_time(start=start_time, end=end_time)
 
 
 
