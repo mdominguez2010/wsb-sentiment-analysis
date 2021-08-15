@@ -19,7 +19,7 @@ Author: github:asad70
 import pandas as pd
 import praw
 from data import *
-from credentials import user_agent, client_id, client_secret
+from secrets import user_agent, client_id, client_secret
 import time
 import matplotlib.pyplot as plt
 import squarify
