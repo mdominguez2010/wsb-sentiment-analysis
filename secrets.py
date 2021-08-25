@@ -10,4 +10,4 @@ client_secret = "***REMOVED***"
 Credentials for TDAmeritrade Developer API
 """
 
-client_id = "***REMOVED***"
+api_key = "***REMOVED***"
