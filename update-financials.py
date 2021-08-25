@@ -1,3 +1,7 @@
+"""
+Combine sentiment scores and stock price and fundamental data into one dataframe
+"""
+
 import shutil
 import requests
 import pandas as pd
@@ -9,9 +13,6 @@ def load_data(df_path):
     """
 
     return pd.read_csv(df_path, index_col=0)
-
-# The Quotes api call retrieves ticker information (price, etc.)
-# The Fundamentals api call retrieves company information (market cap, p/e ratio, etc.)
 
 def make_api_call(parameters, url):
     """
@@ -62,19 +63,21 @@ def combine_dataframe(df1, df2, df3):
 
     return combined_df
 
-# Before writing our new data to the file, let's make a copy of the file in case something goes wrong
-shutil.copyfile('historic_sentiment_analysis.csv', 'historic_sentiment_analysis-copy.csv')
+def update_csv(final_csv_name, combined_df):
+    """
+    Creates and saves csv file
+    """
+    # Before writing our new data to the file, let's make a copy of the file in case something goes wrong
+    shutil.copyfile(final_csv_name, 'historic_sentiment_analysis-copy.csv')
 
-# Read csv
-historic_sentiment_analysis = pd.read_csv('historic_sentiment_analysis.csv')
-#historic_sentiment_analysis = historic_sentiment_analysis.iloc[:, 1:]
+    # Read csv
+    historic_sentiment_analysis = pd.read_csv('historic_sentiment_analysis.csv')
 
-# Remove duplicates
-#historic_sentiment_analysis = historic_sentiment_analysis.loc[:, ~historic_sentiment_analysis.duplicated()]
+    # Update csv
+    historic_sentiment_analysis = pd.concat([historic_sentiment_analysis, combined_df], axis = 0, ignore_index=True)
+    historic_sentiment_analysis.to_csv('historic_sentiment_analysis.csv', index=False)
 
-# Update csv
-historic_sentiment_analysis = pd.concat([historic_sentiment_analysis, current], axis = 0, ignore_index=True)
-historic_sentiment_analysis.to_csv('historic_sentiment_analysis.csv', index=False)
+    return historic_sentiment_analysis
 
 
 if __name__ == "__main__":
@@ -118,3 +121,6 @@ if __name__ == "__main__":
     # Combine dataframes
     combined_df = combine_dataframe(df, df_quotes, df_fundamental)
 
+    # Create and save final csv file
+    # Contains sentiment scores, price data, and fundamental data
+    historic_sentiment_analysis = update_csv('historic_sentiment_analysis.csv', combined_df)
