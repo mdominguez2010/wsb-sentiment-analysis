@@ -4,12 +4,17 @@ import pandas as pd
 import numpy as np
 from datetime import date
 import matplotlib.pyplot as plt
+from secrets import client_id
 
-# Load in df
-df = pd.read_csv('df.csv', index_col=0)
+def load_data(df_path):
+    """
+    Load data from csv into dataframe
+    """
+    return pd.read_csv(df_path, index_col=0)
+
+
 
 # Request info from TD Ameritrade API
-client_id = "***REMOVED***"
 stocks_list = list(df['stock'])
 
 # The Quotes api call retrieves ticker information (price, etc.)
@@ -21,7 +26,7 @@ parameters_quotes = {
     'symbol': stocks_list,
 }
 
-parameters_fund = {
+parameters_fundamental = {
     'apikey': client_id,
     'symbol': stocks_list,
     'projection': 'fundamental'
@@ -31,7 +36,7 @@ quotes_url = f'https://api.tdameritrade.com/v1/marketdata/quotes?apikey={client_
 fundamental_url = f'https://api.tdameritrade.com/v1/instruments?apikey={client_id}'
 
 data_quotes = requests.get(url = quotes_url, params = parameters_quotes).json()
-data_fundamental = requests.get(url = fundamental_url, params = parameters_fund).json()
+data_fundamental = requests.get(url = fundamental_url, params = parameters_fundamental).json()
 
 # quotes dataframe
 df_q = pd.DataFrame.from_dict(data_quotes, orient = 'index')
@@ -43,7 +48,7 @@ fund_cols = []
 for column in [x for x in [*data_fundamental[stocks_list[0]]['fundamental']]]:
     fund_cols.append(column)
 
-# Append data to dataframe
+# Append fundamental data to dataframe
 df_f = pd.DataFrame(columns = fund_cols)
 for stock in stocks_list:
     df_f = df_f.append(pd.Series(data_fundamental[stock]['fundamental'], index=fund_cols), ignore_index=True)
@@ -68,21 +73,6 @@ historic_sentiment_analysis = pd.concat([historic_sentiment_analysis, current], 
 historic_sentiment_analysis.to_csv('historic_sentiment_analysis.csv', index=False)
 
 
-####################################################################################
+if __name__ == "__main__":
 
-
-# current_doubles = []
-# for i in range(len(current.T.duplicated())):
-#     if current.T.duplicated()[i]:
-#         current_doubles.append(i)
-
-# current.iloc[:, 9]
-# current.loc[:,'symbol']
-# historic_sentiment_analysis.loc[:, 'symbol']
-# historic_doubles = []
-# for i in range(len(historic_sentiment_analysis.T.duplicated())):
-#     if historic_sentiment_analysis.T.duplicated()[i]:
-#         historic_doubles.append(i)
-
-# print(len(current_doubles))
-# print(len(historic_doubles))
+    df = load_data('df.csv')
