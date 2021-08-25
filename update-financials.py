@@ -33,17 +33,29 @@ def create_dataframe(json_dict):
 
     return dataframe
 
+def create_columns(json_dict, stocks_list):
+    ***REMOVED***
+    Create columns, which will be used to create a dataframe
+    ***REMOVED***
+    fund_cols = []
+    for column in [x for x in [*json_dict[stocks_list[0]]['fundamental']]]:
+        fund_cols.append(column)
+
+    return fund_cols
 
 
-# Establish fundamental columns for datafrane
-fund_cols = []
-for column in [x for x in [*data_fundamental[stocks_list[0]]['fundamental']]]:
-    fund_cols.append(column)
 
-# Append fundamental data to dataframe
-df_f = pd.DataFrame(columns = fund_cols)
-for stock in stocks_list:
-    df_f = df_f.append(pd.Series(data_fundamental[stock]['fundamental'], index=fund_cols), ignore_index=True)
+def append_dataframe(json_dict, stocks_list, dataframe, columns):
+
+    for stock in stocks_list:
+        dataframe = dataframe.append(
+            pd.Series(
+                json_dict[stock]['fundamental'], index=columns
+                ), ignore_index=True
+            )
+
+    return dataframe
+
 
 # Combine both dataframes
 # Remove duplicates
@@ -94,3 +106,13 @@ if __name__ == "__main__":
     # Price quotes dataframe
     df_quotes = create_dataframe(data_quotes)
 
+    # Create columns for fundamentals dataframe
+    fund_cols = create_columns(data_fundamental, stocks_list)
+
+    # Create dataframe columns for fundamental data
+    df_fundamental = pd.DataFrame(columns = fund_cols)
+
+    # Append data to dataframe
+    df_fundamental = append_dataframe(data_fundamental, stocks_list, df_fundamental, fund_cols)
+
+    
