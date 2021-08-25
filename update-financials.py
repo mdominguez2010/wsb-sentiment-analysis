@@ -12,38 +12,22 @@ def load_data(df_path):
     """
     return pd.read_csv(df_path, index_col=0)
 
-
-
-# Request info from TD Ameritrade API
-stocks_list = list(df['stock'])
-
 # The Quotes api call retrieves ticker information (price, etc.)
 # The Fundamentals api call retrieves company information (market cap, p/e ratio, etc.)
 
-# parameters
-parameters_quotes = {
-    'apikey': client_id,
-    'symbol': stocks_list,
-}
+def make_api_call(parameters, url):
+    """
+    Makes api call and returns JSON file
+    """
 
-parameters_fundamental = {
-    'apikey': client_id,
-    'symbol': stocks_list,
-    'projection': 'fundamental'
-}
-
-quotes_url = f'https://api.tdameritrade.com/v1/marketdata/quotes?apikey={client_id}'
-fundamental_url = f'https://api.tdameritrade.com/v1/instruments?apikey={client_id}'
-
-data_quotes = requests.get(url = quotes_url, params = parameters_quotes).json()
-data_fundamental = requests.get(url = fundamental_url, params = parameters_fundamental).json()
+    return requests.get(url = url, params = parameters).json()
 
 # quotes dataframe
 df_q = pd.DataFrame.from_dict(data_quotes, orient = 'index')
 df_q.reset_index(inplace=True)
 df_q.drop('index', axis=1, inplace=True)
 
-# Establish fund columns for datafrane
+# Establish fundamental columns for datafrane
 fund_cols = []
 for column in [x for x in [*data_fundamental[stocks_list[0]]['fundamental']]]:
     fund_cols.append(column)
@@ -76,3 +60,26 @@ historic_sentiment_analysis.to_csv('historic_sentiment_analysis.csv', index=Fals
 if __name__ == "__main__":
 
     df = load_data('df.csv')
+
+    # Stocks list
+    stocks_list = list(df['stock'])
+
+    # parameters
+    parameters_quotes = {
+        'apikey': client_id,
+        'symbol': stocks_list,
+    }
+
+    parameters_fundamental = {
+        'apikey': client_id,
+        'symbol': stocks_list,
+        'projection': 'fundamental'
+    }
+
+    # Urls
+    quotes_url = f'https://api.tdameritrade.com/v1/marketdata/quotes?apikey={client_id}'
+    fundamental_url = f'https://api.tdameritrade.com/v1/instruments?apikey={client_id}'
+
+    data_quotes = make_api_call(parameters_quotes, quotes_url)
+    data_fundamental = make_api_call(parameters_fundamental, fundamental_url)
+
