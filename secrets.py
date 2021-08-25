@@ -10,4 +10,4 @@ Credentials for Praw
 Credentials for TDAmeritrade Developer API
 ***REMOVED***
 
-client_id = "***REMOVED***"
+api_key = "***REMOVED***"
