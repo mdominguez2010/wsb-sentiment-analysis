@@ -5,7 +5,7 @@ Combine sentiment scores and stock price and fundamental data into one dataframe
 import shutil
 import requests
 import pandas as pd
-from secrets import client_id
+from secrets import api_key
 
 def load_data(df_path):
     ***REMOVED***
@@ -89,12 +89,12 @@ if __name__ == "__main__":
 
     # parameters
     parameters_quotes = {
-        'apikey': client_id,
+        'apikey': api_key,
         'symbol': stocks_list,
     }
 
     parameters_fundamental = {
-        'apikey': client_id,
+        'apikey': api_key,
         'symbol': stocks_list,
         'projection': 'fundamental'
     }
