@@ -1,9 +1,6 @@
 import shutil
 import requests
 import pandas as pd
-import numpy as np
-from datetime import date
-import matplotlib.pyplot as plt
 from secrets import client_id
 
 def load_data(df_path):
@@ -43,10 +40,10 @@ def create_columns(json_dict, stocks_list):
 
     return fund_cols
 
-
-
 def append_dataframe(json_dict, stocks_list, dataframe, columns):
-
+    ***REMOVED***
+    Appends json information to a dataframe
+    ***REMOVED***
     for stock in stocks_list:
         dataframe = dataframe.append(
             pd.Series(
@@ -56,11 +53,14 @@ def append_dataframe(json_dict, stocks_list, dataframe, columns):
 
     return dataframe
 
+def combine_dataframe(df1, df2, df3):
+    ***REMOVED***
+    Combined multiple dataframes
+    ***REMOVED***
+    combined_df = pd.concat([df1, df2, df3], axis=1)
+    combined_df = combined_df.loc[:, ~combined_df.columns.duplicated]
 
-# Combine both dataframes
-# Remove duplicates
-current = pd.concat([df, df_q, df_f], axis=1)
-current = current.loc[:, ~current.columns.duplicated()]
+    return combined_df
 
 # Before writing our new data to the file, let's make a copy of the file in case something goes wrong
 shutil.copyfile('historic_sentiment_analysis.csv', 'historic_sentiment_analysis-copy.csv')
@@ -115,4 +115,6 @@ if __name__ == "__main__":
     # Append data to dataframe
     df_fundamental = append_dataframe(data_fundamental, stocks_list, df_fundamental, fund_cols)
 
-    
+    # Combine dataframes
+    combined_df = combine_dataframe(df, df_quotes, df_fundamental)
+
