@@ -10,6 +10,7 @@ def load_data(df_path):
     ***REMOVED***
     Load data from csv into dataframe
     ***REMOVED***
+
     return pd.read_csv(df_path, index_col=0)
 
 # The Quotes api call retrieves ticker information (price, etc.)
@@ -22,10 +23,17 @@ def make_api_call(parameters, url):
 
     return requests.get(url = url, params = parameters).json()
 
-# quotes dataframe
-df_q = pd.DataFrame.from_dict(data_quotes, orient = 'index')
-df_q.reset_index(inplace=True)
-df_q.drop('index', axis=1, inplace=True)
+def create_dataframe(json_dict):
+    ***REMOVED***
+    Creates and cleans dataframe
+    ***REMOVED***
+    dataframe = pd.DataFrame.from_dict(json_dict, orient='index')
+    dataframe.reset_index(inplace=True)
+    dataframe.drop('index', axis=1, inplace=True)
+
+    return dataframe
+
+
 
 # Establish fundamental columns for datafrane
 fund_cols = []
@@ -82,4 +90,7 @@ if __name__ == "__main__":
 
     data_quotes = make_api_call(parameters_quotes, quotes_url)
     data_fundamental = make_api_call(parameters_fundamental, fundamental_url)
+
+    # Price quotes dataframe
+    df_quotes = create_dataframe(data_quotes)
 
