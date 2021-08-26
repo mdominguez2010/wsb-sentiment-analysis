@@ -56,10 +56,10 @@ def append_dataframe(json_dict, stocks_list, dataframe, columns):
 
 def combine_dataframe(df1, df2, df3):
     """
-    Combined multiple dataframes
+    Combine multiple dataframes
     """
     combined_df = pd.concat([df1, df2, df3], axis=1)
-    combined_df = combined_df.loc[:, ~combined_df.columns.duplicated]
+    combined_df = combined_df.loc[:, ~combined_df.columns.duplicated()]
 
     return combined_df
 
@@ -100,8 +100,8 @@ if __name__ == "__main__":
     }
 
     # Urls
-    quotes_url = f'https://api.tdameritrade.com/v1/marketdata/quotes?apikey={client_id}'
-    fundamental_url = f'https://api.tdameritrade.com/v1/instruments?apikey={client_id}'
+    quotes_url = f'https://api.tdameritrade.com/v1/marketdata/quotes?apikey={api_key}'
+    fundamental_url = f'https://api.tdameritrade.com/v1/instruments?apikey={api_key}'
 
     data_quotes = make_api_call(parameters_quotes, quotes_url)
     data_fundamental = make_api_call(parameters_fundamental, fundamental_url)
