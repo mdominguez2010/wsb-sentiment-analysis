@@ -33,6 +33,27 @@ def establish_features_target(features, target):
 
     return X, y
 
+def encode_catgeorical_columns(X):
+    """
+    Takes in 2 lists: a list of categorical columns and a list of numerical columns
+    Outputs a concatenated dataframe with encoded categorical columns and the numerical columns
+    """
+    categorical_columns = list(X.select_dtypes('object').columns)
+    numerical_columns = list(X.select_dtypes(['int64', 'float64', 'int32', 'float32']).columns)
+
+    ohe = OneHotEncoder(sparse=False, drop='first')
+    categorical_dataframe = ohe.fit_transform(X.loc[:, categorical_columns])
+    X_ohe = pd.DataFrame(
+        categorical_dataframe,
+        columns=ohe.get_feature_names(categorical_columns), # creates meaningful columns names
+        index=X.index # Keep the same index values
+    )
+
+    # Put it all together across the columns axis
+    X = pd.concat([X.loc[:, numerical_columns], X_ohe], axis=1)
+
+    return X
+
 def main():
     # Load data
     combined_df = load_pickle('../data/combined_df.pickle')
@@ -42,8 +63,13 @@ def main():
         combined_df.loc[:, 'Bearish':].drop('date', axis=1),
         combined_df['5d-direction'])
 
+    # Encode categorical columns
+    X = encode_catgeorical_columns(X)
+
     print(X.head())
-    print(y.head())
+
+
+
 
 if __name__ == "__main__":
 
