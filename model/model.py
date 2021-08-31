@@ -54,7 +54,30 @@ def encode_catgeorical_columns(X):
 
     return X
 
+def scale_data(X, scaler):
+    ***REMOVED***
+    Standardize the data for the given column
+    ***REMOVED***
+    scaler = scaler
+    X_scaled = scaler.fit_transform(X)
+
+    return X_scaled
+
+def model_score(model, X, y, cv=5):
+    ***REMOVED***
+    Runs cross validation scores and computes the mean scores for the model performance
+    ***REMOVED***
+    my_model = model
+    model_scores = cross_val_score(my_model, X, y, cv=cv)
+    mean_model_scores = np.mean(model_scores)
+
+    print(f"{my_model} mean score: {mean_model_scores:.4}")
+
+    return my_model, model_scores, mean_model_scores
+
+
 def main():
+
     # Load data
     combined_df = load_pickle('../data/combined_df.pickle')
 
@@ -66,10 +89,28 @@ def main():
     # Encode categorical columns
     X = encode_catgeorical_columns(X)
 
-    print(X.head())
+    # Create holdout set (25% in this case)
+    X, X_test, y, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
+    # Scale the data
 
+    X_scaled = scale_data(X, StandardScaler())
+    X_test_scaled = scale_data(X_test, StandardScaler())
 
+    # Use cross_val_score to ross validate each model's score
+    # Save the sores in a variable
+    knn, knn_scores, mean_knn_scores = model_score(
+        KNeighborsClassifier(), X_scaled, y, cv=10)
+
+    lr, lr_scores, mean_lr_scores = model_score(
+        LogisticRegression(max_iter=1000), X_scaled, y, cv=10)
+    
+    rf, rf_scores, mean_rf_scores = model_score(
+        RandomForestClassifier(), X_scaled, y, cv=10)
+
+    gbm, gbm_scores, mean_gbm_scores = model_score(
+        xgb.XGBClassifier(), X_scaled, y, cv=10)
+    
 
 if __name__ == "__main__":
 
