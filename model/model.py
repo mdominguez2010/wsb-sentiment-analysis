@@ -93,8 +93,29 @@ def find_best_model(dict_models_scores):
 
     return best_model
 
-def run_performance_metrics():
+def run_performance_metrics(best_model, X_scaled, X_test_scaled, y, y_test):
+    ***REMOVED***
+    Run a series of detailed metrics to see exactly how the model performed
+    ***REMOVED***
+    # Fit model
+    best_model.fit(X_scaled, y)
     
+    # Predictions
+    preds = best_model.predict(X_test_scaled)
+
+    # Precision
+    prec_score = precision_score(y_test, preds, average='weighted')
+    print(f"Precision Score: {prec_score:.4f}")
+
+    # Recall
+    rec_score = recall_score(y_test, preds, average='weighted')
+    print(f"Recall Score: {rec_score:.4f}")
+
+    # Confusion Matrix
+    plot_confusion_matrix(best_model, X_test_scaled, y_test, labels=[1, 0, -1])
+    plt.show();
+
+    return prec_score, rec_score
 
 def main():
 
@@ -120,17 +141,18 @@ def main():
     # Use cross_val_score to ross validate each model's score
     # Save the sores in a variable
     print("Calculating model scores...\n")
+
     knn, knn_scores, mean_knn_score = score_model('KNN',
-        KNeighborsClassifier(), X_scaled, y, cv=10)
+        KNeighborsClassifier(), X_scaled, y, cv=5)
 
     lr, lr_scores, mean_lr_score = score_model('Logistic Regression',
-        LogisticRegression(max_iter=1000), X_scaled, y, cv=10)
+        LogisticRegression(max_iter=1000), X_scaled, y, cv=5)
     
     rf, rf_scores, mean_rf_score = score_model('Random Forest',
-        RandomForestClassifier(), X_scaled, y, cv=10)
+        RandomForestClassifier(), X_scaled, y, cv=5)
 
     gbm, gbm_scores, mean_gbm_score = score_model('XGBoost',
-        xgb.XGBClassifier(), X_scaled, y, cv=10)
+        xgb.XGBClassifier(), X_scaled, y, cv=5)
 
     # Save above objects in a dictionary
     models_scores = {
@@ -140,10 +162,14 @@ def main():
         gbm: mean_gbm_score
     }
 
-    print("\nThe best-performing model is...\n")
-
     # Find best model
+    print("\nThe best performing model is...\n")
     best_model = find_best_model(models_scores)
+
+    # Run Metrics
+    print("\nJust running some metrics :-)")
+    prec_score, rec_score = run_performance_metrics(best_model, X_scaled, X_test_scaled, y, y_test)
+
 
 if __name__ == "__main__":
 
