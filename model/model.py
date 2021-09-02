@@ -63,7 +63,7 @@ def scale_data(X, scaler):
 
     return X_scaled
 
-def model_score(model, X, y, cv=5):
+def score_model(model_name, model, X, y, cv=5):
     ***REMOVED***
     Runs cross validation scores and computes the mean scores for the model performance
     ***REMOVED***
@@ -71,10 +71,30 @@ def model_score(model, X, y, cv=5):
     model_scores = cross_val_score(my_model, X, y, cv=cv)
     mean_model_scores = np.mean(model_scores)
 
-    print(f"{my_model} mean score: {mean_model_scores:.4}")
+    print(f"{model_name} mean score: {mean_model_scores:.4}")
 
     return my_model, model_scores, mean_model_scores
 
+def find_best_model(dict_models_scores):
+    ***REMOVED***
+    Returns best model based on score
+    ***REMOVED***
+    # sort by mean scores (dict values)
+    # then select the last model (highest mean scores)
+    best_model = {
+        k: v for k, v in sorted(
+            dict_models_scores.items(), key=lambda item: item[1]
+        )
+    }
+    best_model = list(best_model.keys())[-1]
+    model_name = str(best_model)[:15]
+
+    print(f"Best model: {model_name}")
+
+    return best_model
+
+def run_performance_metrics():
+    
 
 def main():
 
@@ -99,18 +119,31 @@ def main():
 
     # Use cross_val_score to ross validate each model's score
     # Save the sores in a variable
-    knn, knn_scores, mean_knn_scores = model_score(
+    print("Calculating model scores...\n")
+    knn, knn_scores, mean_knn_score = score_model('KNN',
         KNeighborsClassifier(), X_scaled, y, cv=10)
 
-    lr, lr_scores, mean_lr_scores = model_score(
+    lr, lr_scores, mean_lr_score = score_model('Logistic Regression',
         LogisticRegression(max_iter=1000), X_scaled, y, cv=10)
     
-    rf, rf_scores, mean_rf_scores = model_score(
+    rf, rf_scores, mean_rf_score = score_model('Random Forest',
         RandomForestClassifier(), X_scaled, y, cv=10)
 
-    gbm, gbm_scores, mean_gbm_scores = model_score(
+    gbm, gbm_scores, mean_gbm_score = score_model('XGBoost',
         xgb.XGBClassifier(), X_scaled, y, cv=10)
-    
+
+    # Save above objects in a dictionary
+    models_scores = {
+        knn: mean_knn_score,
+        lr: mean_lr_score ,
+        rf: mean_rf_score,
+        gbm: mean_gbm_score
+    }
+
+    print("\nThe best-performing model is...\n")
+
+    # Find best model
+    best_model = find_best_model(models_scores)
 
 if __name__ == "__main__":
 
