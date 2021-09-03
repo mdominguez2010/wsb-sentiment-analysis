@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import pickle
+import warnings
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -15,9 +16,9 @@ from sklearn.preprocessing import StandardScaler
 
 import matplotlib.pyplot as plt
 
-import warnings
 
 def fxn():
+    # Remove deprecation warnings
     warnings.warn("deprecated", DeprecationWarning)
 
 def load_pickle(file_path):
