@@ -4,7 +4,10 @@ Clean data and prep for modeling
 import pandas as pd
 import numpy as np
 import pickle
+import warnings
 
+def fxn():
+    warnings.warn("deprecated", DeprecationWarning)
 
 def import_data(file_path):
     ***REMOVED***
