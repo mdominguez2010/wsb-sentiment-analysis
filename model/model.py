@@ -15,6 +15,11 @@ from sklearn.preprocessing import StandardScaler
 
 import matplotlib.pyplot as plt
 
+import warnings
+
+def fxn():
+    warnings.warn("deprecated", DeprecationWarning)
+
 def load_pickle(file_path):
     """
     Loads pickled 'combined_df' file
