@@ -13,7 +13,7 @@ def make_api_call(api_key, stock):
     r = requests.get(url)
     print(r.status_code)
 
-    return r
+    return r.json()
 
 def get_list_of_stocks(filepath):
     dataframe = pd.read_csv(filepath)
@@ -22,6 +22,15 @@ def get_list_of_stocks(filepath):
     return list_of_stocks
 
 if __name__ == "__main__":
-    list_of_stocks = get_list_of_stocks('../historic_sentiment_analysis.csv')[0]
+    # list_of_stocks = get_list_of_stocks('../historic_sentiment_analysis.csv')
 
-    for stock in list_of_stocks
+    # for stock in list_of_stocks:
+    #     stock_data = make_api_call(api_key = api_key_alpha, stock=stock)
+
+    #     with open(f'./Weekly/{stock}.pickle', 'wb') as f:
+    #         pickle.dump(stock_data, f)
+
+    with open('./Weekly/AFRM.pickle', 'rb') as f:
+        AFRM_data = pickle.load(f)
+
+    print(AFRM_data)
