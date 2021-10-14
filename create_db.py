@@ -20,19 +20,6 @@ cursor.execute("""
 """)
 
 cursor.execute("""
-    CREATE TABLE IF NOT EXISTS sentiment (
-        id INTEGER PRIMARY KEY, 
-        stock_id INTEGER,
-        date NOT NULL,
-        bearish REAL,
-        neutral REAL,
-        bullish REAL,
-        compound REAL,
-        FOREIGN KEY (stock_id) REFERENCES stock (id)
-    )
-""")
-
-cursor.execute("""
     CREATE TABLE IF NOT EXISTS daily_price (
         id INTEGER PRIMARY KEY, 
         stock_id INTEGER,
@@ -41,8 +28,20 @@ cursor.execute("""
         high NOT NULL, 
         low NOT NULL, 
         close NOT NULL,
-        adj_close NOT NULL,
         volume NOT NULL,
+        FOREIGN KEY (stock_id) REFERENCES stock (id)
+    )
+""")
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS sentiment (
+        id INTEGER PRIMARY KEY, 
+        stock_id INTEGER,
+        date NOT NULL,
+        bearish REAL,
+        neutral REAL,
+        bullish REAL,
+        compound REAL,
         FOREIGN KEY (stock_id) REFERENCES stock (id)
     )
 """)
