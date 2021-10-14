@@ -21,3 +21,7 @@ APCA_API_SECRET_KEY = '***REMOVED***'
 APCA_API_BASE_URL = 'https://api.alpaca.markets'
 
 DB_FILE_PATH = '***REMOVED***'
+
+################## Alpha Vantage ##################
+
+API_KEY_ALPHA_VANTAGE = '***REMOVED***'
