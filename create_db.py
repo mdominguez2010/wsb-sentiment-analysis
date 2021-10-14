@@ -11,7 +11,10 @@ cursor.execute(***REMOVED***
     CREATE TABLE IF NOT EXISTS stock (
         id INTEGER PRIMARY KEY, 
         symbol TEXT NOT NULL UNIQUE, 
-        name TEXT NOT NULL
+        name TEXT NOT NULL,
+        sector TEXT NOT NULL,
+        industry TEXT NOT NULL
+        fiscalYearEnd TEXT NOT NULL
     )
 ***REMOVED***)
 
@@ -29,7 +32,7 @@ cursor.execute(***REMOVED***
 ***REMOVED***)
 
 cursor.execute(***REMOVED***
-    CREATE TABLE IF NOT EXISTS stock_price (
+    CREATE TABLE IF NOT EXISTS daily_price (
         id INTEGER PRIMARY KEY, 
         stock_id INTEGER,
         date NOT NULL,
@@ -37,6 +40,7 @@ cursor.execute(***REMOVED***
         high NOT NULL, 
         low NOT NULL, 
         close NOT NULL,
+        adj_close NOT NULL,
         volume NOT NULL,
         FOREIGN KEY (stock_id) REFERENCES stock (id)
     )
@@ -47,9 +51,6 @@ cursor.execute(***REMOVED***
         id INTEGER PRIMARY KEY, 
         stock_id INTEGER,
         date NOT NULL,
-
-
-
         FOREIGN KEY (stock_id) REFERENCES stock (id)
     )
 ***REMOVED***)
