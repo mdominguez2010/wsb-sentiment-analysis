@@ -19,7 +19,7 @@ cursor.execute(***REMOVED***
 ***REMOVED***)
 
 cursor.execute(***REMOVED***
-    DROP TABLE stock_price
+    DROP TABLE daily_price
 ***REMOVED***)
 
 cursor.execute(***REMOVED***
