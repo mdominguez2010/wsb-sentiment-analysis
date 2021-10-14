@@ -12,9 +12,10 @@ cursor.execute(***REMOVED***
         id INTEGER PRIMARY KEY, 
         symbol TEXT NOT NULL UNIQUE, 
         name TEXT NOT NULL,
-        sector TEXT NOT NULL,
-        industry TEXT NOT NULL
-        fiscalYearEnd TEXT NOT NULL
+        marginable NOT NULL,
+        shortable NOT NULL,
+        status NOT NULL,
+        tradable NOT NULL
     )
 ***REMOVED***)
 
