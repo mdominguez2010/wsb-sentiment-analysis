@@ -5,7 +5,7 @@ Combine sentiment scores and stock price and fundamental data into one dataframe
 import shutil
 import requests
 import pandas as pd
-from secrets import api_key
+from secrets import API_KEY_TDA
 
 def load_data(df_path):
     """
@@ -89,19 +89,19 @@ if __name__ == "__main__":
 
     # parameters
     parameters_quotes = {
-        'apikey': api_key,
+        'apikey': API_KEY_TDA,
         'symbol': stocks_list,
     }
 
     parameters_fundamental = {
-        'apikey': api_key,
+        'apikey': API_KEY_TDA,
         'symbol': stocks_list,
         'projection': 'fundamental'
     }
 
     # Urls
-    quotes_url = f'https://api.tdameritrade.com/v1/marketdata/quotes?apikey={api_key}'
-    fundamental_url = f'https://api.tdameritrade.com/v1/instruments?apikey={api_key}'
+    quotes_url = f'https://api.tdameritrade.com/v1/marketdata/quotes?apikey={API_KEY_TDA}'
+    fundamental_url = f'https://api.tdameritrade.com/v1/instruments?apikey={API_KEY_TDA}'
 
     data_quotes = make_api_call(parameters_quotes, quotes_url)
     data_fundamental = make_api_call(parameters_fundamental, fundamental_url)

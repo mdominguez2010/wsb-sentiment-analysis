@@ -19,7 +19,7 @@ cursor.execute("""
 """)
 
 cursor.execute("""
-    DROP TABLE stock_price
+    DROP TABLE daily_price
 """)
 
 cursor.execute("""
