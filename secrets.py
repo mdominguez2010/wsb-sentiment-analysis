@@ -12,7 +12,7 @@ from urllib.parse import unquote
 
 ***REMOVED***
 
-API_KEY_TDA = "	***REMOVED***@AMER.OAUTHAP"
+***REMOVED***
 TOKEN_PATH = '/Users/dominguez/Documents/wsb-sentiment-analysis/token.json'
 REDIRECT_URI = "http://localhost/"
 # REDIRECT_URI_ENCODED = "http://localhost/algo"
