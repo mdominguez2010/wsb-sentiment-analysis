@@ -12,7 +12,7 @@ client_secret = "***REMOVED***"
 
 ################## TDAmeritrade API ##################
 
-API_KEY_TDA = "	***REMOVED***@AMER.OAUTHAP"
+API_KEY_TDA = "***REMOVED***"
 TOKEN_PATH = '/Users/dominguez/Documents/wsb-sentiment-analysis/token.json'
 REDIRECT_URI = "http://localhost/"
 # REDIRECT_URI_ENCODED = "http://localhost/algo"

@@ -7,6 +7,8 @@ import requests
 import pandas as pd
 from secrets import API_KEY_TDA
 
+from requests.api import request
+
 def load_data(df_path):
     """
     Load data from csv into dataframe
