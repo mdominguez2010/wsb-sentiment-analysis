@@ -79,6 +79,10 @@ def update_csv(final_csv_name, combined_df):
     historic_sentiment_analysis = pd.concat([historic_sentiment_analysis, combined_df], axis = 0, ignore_index=True)
     historic_sentiment_analysis.to_csv('historic_sentiment_analysis.csv', index=False)
 
+    # Ensure correct number of columns for database
+    assert len(historic_sentiment_analysis.columns.tolist()) == 100, "Data contains more than the required 100 columns!"
+
+
     return historic_sentiment_analysis
 
 
