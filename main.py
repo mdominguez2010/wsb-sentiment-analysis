@@ -17,6 +17,7 @@ Author: github:asad70
 
 #  Import Libraries
 import pandas as pd
+import warnings
 import praw
 from data import *
 from secrets import user_agent, client_id, client_secret
@@ -253,9 +254,13 @@ def print_run_time(start, end):
     run_time = end - start
     print("Program run time: %.0f" % run_time, "seconds")
 
+
 if __name__ == "__main__":
 
-        # Set program parameters
+    # Ignore that annoying Deprecation Warning
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+    # Set program parameters
     subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket']     # sub-reddit to search
     post_flairs = {'Daily Discussion', 'Weekend Discussion', 'Discussion'}    # posts flairs to search || None flair is automatically considered
     goodAuth = {'AutoModerator'}   # authors whom comments are allowed more than once
