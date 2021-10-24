@@ -258,7 +258,7 @@ def print_run_time(start, end):
 if __name__ == "__main__":
 
     # Ignore that annoying Deprecation Warning
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
+    warnings.filterwarnings("ignore", category=FutureWarning)
 
     # Set program parameters
     subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket']     # sub-reddit to search
