@@ -17,7 +17,6 @@ Author: github:asad70
 
 #  Import Libraries
 import pandas as pd
-import warnings
 import praw
 from data import *
 from secrets import user_agent, client_id, client_secret
@@ -256,9 +255,6 @@ def print_run_time(start, end):
 
 
 if __name__ == "__main__":
-
-    # Ignore that annoying Deprecation Warning
-    warnings.filterwarnings("ignore", category=FutureWarning)
 
     # Set program parameters
     subs = ['wallstreetbets', 'stocks', 'investing', 'stockmarket']     # sub-reddit to search
