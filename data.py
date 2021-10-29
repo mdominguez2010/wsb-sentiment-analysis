@@ -1,13 +1,17 @@
-import numpy as np
-import pandas as pd
-
 '''includes US stock symbols with market cap > 100 Million, and price above $3. 
 Download the csv file:
 https://www.nasdaq.com/market-activity/stocks/screener?exchange=nasdaq&letter=0&render=download 
 for all of the NYSE, NASDAQ and NYSEAMERICAN public traded companies.
 '''
 
+import numpy as np
+import pandas as pd
+import warnings
+
 stocks = pd.read_csv('tickers.csv')
+
+# Ignore that annoying Deprecation Warning
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 # Last Sale column is an object, let's convert to float
 stocks['Last Sale'] = stocks['Last Sale'].str.replace('$', '')
