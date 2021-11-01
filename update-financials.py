@@ -70,14 +70,14 @@ def update_csv(final_csv_name, combined_df):
     Creates and saves csv file
     """
     # Before writing our new data to the file, let's make a copy of the file in case something goes wrong
-    shutil.copyfile(final_csv_name, 'historic_sentiment_analysis-copy.csv')
+    shutil.copyfile(final_csv_name, './data/historic_sentiment_analysis-copy.csv')
 
     # Read csv
-    historic_sentiment_analysis = pd.read_csv('historic_sentiment_analysis.csv')
+    historic_sentiment_analysis = pd.read_csv('./data/historic_sentiment_analysis.csv')
 
     # Update csv
     historic_sentiment_analysis = pd.concat([historic_sentiment_analysis, combined_df], axis = 0, ignore_index=True)
-    historic_sentiment_analysis.to_csv('historic_sentiment_analysis.csv', index=False)
+    historic_sentiment_analysis.to_csv('./data/historic_sentiment_analysis.csv', index=False)
 
     # Ensure correct number of columns for database
     assert len(historic_sentiment_analysis.columns.tolist()) == 100, "Data contains more than the required 100 columns!"
@@ -88,7 +88,7 @@ def update_csv(final_csv_name, combined_df):
 
 if __name__ == "__main__":
 
-    df = load_data('df.csv')
+    df = load_data('./data/df.csv')
 
     # Stocks list
     stocks_list = list(df['stock'])
@@ -129,4 +129,4 @@ if __name__ == "__main__":
 
     # Create and save final csv file
     # Contains sentiment scores, price data, and fundamental data
-    historic_sentiment_analysis = update_csv('historic_sentiment_analysis.csv', combined_df)
+    historic_sentiment_analysis = update_csv('./data/historic_sentiment_analysis.csv', combined_df)
