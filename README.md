@@ -8,9 +8,6 @@ Reddit API text from subreddits:
   - r/investing
   - r/stockmarket
 
-
-TDAmeritrade API price information and fundamental data
-
 ## Files
 1. data.py --> program parameters and stock tickers to search
 2. main.py --> sentiment score program
@@ -20,7 +17,6 @@ TDAmeritrade API price information and fundamental data
 7. df.csv --> placeholder for daily top 10 mentioned stocks
 8. historic_sentiment_analysis.csv --> the final dataframe, updated daily
 9. historic_sentiment_analysis-copy.csv --> a copy of the dataset is made daily
-
 
 ## 'data' folder
 1. combined_df.pickle --> final dataset, serialized
