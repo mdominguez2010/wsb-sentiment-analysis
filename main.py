@@ -18,7 +18,7 @@ Author: github:asad70
 #  Import Libraries
 import pandas as pd
 import praw
-from data import *
+from stocks_to_trade import *
 from secrets import user_agent, client_id, client_secret
 import time
 import matplotlib.pyplot as plt
@@ -238,7 +238,7 @@ class Saving:
         self.df.rename(columns={'index': 'stock'}, inplace=True)
 
         # Save current top wsb stocks to csv file
-        self.df.to_csv('df.csv')
+        self.df.to_csv('./data/df.csv')
 
 def time_it(time):
     '''
