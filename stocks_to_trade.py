@@ -7,7 +7,7 @@ for all of the NYSE, NASDAQ and NYSEAMERICAN public traded companies.
 import pandas as pd
 import warnings
 
-stocks = pd.read_csv('tickers.csv')
+stocks = pd.read_csv('./data/tickers.csv')
 
 # Ignore that annoying Deprecation Warning
 warnings.filterwarnings("ignore", category=FutureWarning)
