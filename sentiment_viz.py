@@ -78,5 +78,5 @@ print(f"Total days analyzed: {n_days_analyzed}")
 trending_data = trend_data(TREND_LENGTH)
 trending = trending_stocks(TREND_LENGTH)
 
-average_sentiment(trending_data, sentiment_type=SENTIMENT_LIST[0])
+average_sentiment(trending_data, sentiment_type=SENTIMENT_LIST[2])
 plot_average_sentiment()
