@@ -1,6 +1,6 @@
-***REMOVED***
+"""
 Combine sentiment scores and stock price and fundamental data into one dataframe
-***REMOVED***
+"""
 
 import shutil
 import requests
@@ -10,23 +10,23 @@ from secrets import API_KEY_TDA
 from requests.api import request
 
 def load_data(df_path):
-    ***REMOVED***
+    """
     Load data from csv into dataframe
-    ***REMOVED***
+    """
 
     return pd.read_csv(df_path, index_col=0)
 
 def make_api_call(parameters, url):
-    ***REMOVED***
+    """
     Makes api call and returns JSON file
-    ***REMOVED***
+    """
 
     return requests.get(url = url, params = parameters).json()
 
 def create_dataframe(json_dict):
-    ***REMOVED***
+    """
     Creates and cleans dataframe
-    ***REMOVED***
+    """
     dataframe = pd.DataFrame.from_dict(json_dict, orient='index')
     dataframe.reset_index(inplace=True)
     dataframe.drop('index', axis=1, inplace=True)
@@ -34,9 +34,9 @@ def create_dataframe(json_dict):
     return dataframe
 
 def create_columns(json_dict, stocks_list):
-    ***REMOVED***
+    """
     Create columns, which will be used to create a dataframe
-    ***REMOVED***
+    """
     fund_cols = []
     for column in [x for x in [*json_dict[stocks_list[0]]['fundamental']]]:
         fund_cols.append(column)
@@ -44,9 +44,9 @@ def create_columns(json_dict, stocks_list):
     return fund_cols
 
 def append_dataframe(json_dict, stocks_list, dataframe, columns):
-    ***REMOVED***
+    """
     Appends json information to a dataframe
-    ***REMOVED***
+    """
     for stock in stocks_list:
         dataframe = dataframe.append(
             pd.Series(
@@ -57,18 +57,18 @@ def append_dataframe(json_dict, stocks_list, dataframe, columns):
     return dataframe
 
 def combine_dataframe(df1, df2, df3):
-    ***REMOVED***
+    """
     Combine multiple dataframes
-    ***REMOVED***
+    """
     combined_df = pd.concat([df1, df2, df3], axis=1)
     combined_df = combined_df.loc[:, ~combined_df.columns.duplicated()]
 
     return combined_df
 
 def update_csv(final_csv_name, combined_df):
-    ***REMOVED***
+    """
     Creates and saves csv file
-    ***REMOVED***
+    """
     # Before writing our new data to the file, let's make a copy of the file in case something goes wrong
     shutil.copyfile(final_csv_name, './data/historic_sentiment_analysis-copy.csv')
 

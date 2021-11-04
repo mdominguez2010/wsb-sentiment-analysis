@@ -1,6 +1,6 @@
-***REMOVED***
+"""
 Visualizes the sentiment data
-***REMOVED***
+"""
 
 import pandas as pd
 import numpy as np
@@ -8,10 +8,10 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 def import_data(file_path):
-    ***REMOVED***
+    """
     Loads spreadsheet from a file into a dataframe object
     Cleans data column
-    ***REMOVED***
+    """
     df = pd.read_csv(file_path)
     df['date'] = pd.to_datetime(df['date'])
     return df
