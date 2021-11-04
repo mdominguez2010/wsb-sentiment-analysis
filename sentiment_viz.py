@@ -71,7 +71,7 @@ SENTIMENT_LIST = ["Bullish", "Bearish", "Total_Compound"]
 #######################################
 
 
-stock_data = import_data("historic_sentiment_analysis.csv")
+stock_data = import_data("./data/historic_sentiment_analysis.csv")
 n_days_analyzed = len(stock_data['date'].unique())
 print(f"Total days analyzed: {n_days_analyzed}")
 
