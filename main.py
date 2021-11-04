@@ -52,9 +52,9 @@ class crawlSubreddit:
         self.cmt_auth = cmt_auth
 
     def extract_tickers(self):
-        ***REMOVED***
+        """
         Crawls the subreddits and performs analysis
-        ***REMOVED***
+        """
         for sub in self.subs:
             subreddit = reddit.subreddit(sub)
             hot_python = subreddit.hot() # sorting posts by hot
@@ -121,9 +121,9 @@ class cleanData:
         self.picks = picks
 
     def sort_dictionary(self):
-        ***REMOVED***
+        """
         Sorts the dictionary
-        ***REMOVED***
+        """
         symbols = dict(sorted(self.tickers.items(), key=lambda item: item[1], reverse = True))
         top_picks = list(symbols.keys())[0:self.picks]
 
@@ -208,9 +208,9 @@ class sentimentAnalysis:
         return df
 
     def plot_details(self, df):
-        ***REMOVED***
+        """
         Data visualization. Most mentioned picks and sentiment analysis
-        ***REMOVED***
+        """
         squarify.plot(sizes=self.times, label=self.top, alpha=0.7)
         plt.axis('off')
         plt.title(f"{self.picks} most mentioned picks")
@@ -229,9 +229,9 @@ class Saving:
         self.date = date
     
     def save_csv(self):
-        ***REMOVED***
+        """
         Preps dataframe then saves as csv in current directory
-        ***REMOVED***
+        """
         # append date column to dataframe for storing in database
         self.df['date'] = [self.date.today() for x in range(self.df.shape[0])]
         self.df.reset_index(inplace=True)

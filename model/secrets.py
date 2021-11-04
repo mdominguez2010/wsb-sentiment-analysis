@@ -1,23 +1,23 @@
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
+"""
+Keeps important information secret
+"""
+################## r/WallStreetBets Creds ##################
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
+user_agent = "Comment Extraction"
+client_id = "***REMOVED***"
+client_secret = "***REMOVED***"
 
-***REMOVED***
+################## TDAmeritrade API ##################
 
-***REMOVED***
+API_KEY_TDA = "***REMOVED***"
 
-***REMOVED***
+################## Alpaca Trade API ##################
 
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
+APCA_API_KEY_ID = '***REMOVED***'
+APCA_API_SECRET_KEY = '***REMOVED***'
+APCA_API_BASE_URL = 'https://api.alpaca.markets'
+DB_FILE_PATH = '***REMOVED***'
 
-***REMOVED***
+################## Alpha Vantage ##################
 
-***REMOVED***
+API_KEY_ALPHA_VANTAGE = '***REMOVED***'

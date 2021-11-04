@@ -1,6 +1,6 @@
-***REMOVED***
-***REMOVED***
-***REMOVED***
+"""
+Keeps important information secret
+"""
 
 api_key = "***REMOVED***"
 
