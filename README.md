@@ -10,6 +10,19 @@ Reddit API text from subreddits:
   - r/investing
   - r/stockmarket
 
+### Input Variables
+
+1. Sentiment
+    - Bullish, Bearish, Total_compound (weighted average)
+2. Financial
+    - Company performace (net profit margin, debt-to-equity)
+
+### Target Variable
+
+1. 1-day price direction
+2. 2-day price direction
+3. 5-day price direction
+
 ## Files
 - main.py --> sentiment score program
 - update-financials.py --> ticker price and fundamental information program
