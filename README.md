@@ -1,5 +1,6 @@
 # wsb-sentiment-analysis
 Stock Sentiment Analysis on r/Wallstreetbets using NLTK Vader
+
 The goal is to use sentiment on reddit to determine if it can be used to predict stock price movements
 
 ## Data
