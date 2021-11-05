@@ -13,7 +13,7 @@ Reddit API text from subreddits:
 - main.py --> sentiment score program
 - update-financials.py --> ticker price and fundamental information program
 - stocks_to_trade.py --> establishes stock universe
-- sentiment_viz.py --> plots top 5 mentioned stocks and their sentiment scores
+- sentiment_viz.py --> plots top 5 mentioned stocks and their average sentiment scores
 
 ## 'data' folder
 - df.csv --> splace-holder for the day's sentiment score data
