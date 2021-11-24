@@ -85,9 +85,7 @@ def update_csv(final_csv_name, combined_df):
 
     return historic_sentiment_analysis
 
-
-if __name__ == "__main__":
-
+def main_program():
     df = load_data('./data/df.csv')
 
     # Stocks list
@@ -130,3 +128,5 @@ if __name__ == "__main__":
     # Create and save final csv file
     # Contains sentiment scores, price data, and fundamental data
     historic_sentiment_analysis = update_csv('./data/historic_sentiment_analysis.csv', combined_df)
+    
+    return historic_sentiment_analysis
