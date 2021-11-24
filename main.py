@@ -25,6 +25,7 @@ import matplotlib.pyplot as plt
 import squarify
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from datetime import date
+import update_financials
 
 class crawlSubreddit:
 
@@ -325,6 +326,9 @@ if __name__ == "__main__":
 
     saving = Saving(df, date)
     saving.save_csv()
+    
+    # Extract recent financials, update dataframe, and save as csv
+    historic_sentiment_analysis = update_financials.main_program()
 
     end_time = time_it(time)
     print_run_time(start=start_time, end=end_time)
